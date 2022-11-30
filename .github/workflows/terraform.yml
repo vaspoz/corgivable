@@ -52,6 +52,10 @@ on:
 permissions:
     contents: read
 
+env:
+    AWS_ACCESS_KEY_ID: "AKIA5ZOFKTRBQTD23VWD"
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+
 jobs:
     terraform:
         name: "Terraform"
@@ -62,10 +66,6 @@ jobs:
         defaults:
             run:
                 shell: bash
-
-        env:
-            AWS_ACCESS_KEY: "AKIA5ZOFKTRBQTD23VWD"
-            AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
 
         steps:
             # Checkout the repository to the GitHub Actions runner
