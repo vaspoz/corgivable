@@ -1,7 +1,7 @@
 module "main_vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "vpc-anc-dev"
+  name = "vpc-main"
   cidr = "10.0.0.0/16"
 
   azs                 = ["eu-central-1a"]
