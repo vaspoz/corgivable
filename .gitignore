@@ -29,3 +29,9 @@ override.tf.json
 # example: *tfplan*
 
 .local
+
+lambda/node_modules
+
+**/*.zip
+
+.terraform.lock.hcl

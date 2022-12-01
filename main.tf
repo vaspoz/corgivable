@@ -58,17 +58,19 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
   policy_arn = aws_iam_policy.lambda_policy.arn
 }
 
-data "archive_file" "main_function_zip" {
+data "archive_file" "discord_prompt_poster_zip" {
   type        = "zip"
   source_dir  = "${path.module}/lambda/"
-  output_path = "${path.module}/lambda/hello-lambda.zip"
+  output_path = "${path.module}/discord-poster-lambda.zip"
 }
 
-resource "aws_lambda_function" "terraform_lambda_func" {
-  filename      = "${path.module}/lambda/hello-lambda.zip"
-  function_name = "discord-listener"
+resource "aws_lambda_function" "discord_prompt_poster" {
+  filename      = "${path.module}/discord-poster-lambda.zip"
+  function_name = "discord-prompt-poster"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "discord-handler.handler"
+  handler       = "discord-poster.handler"
   runtime       = "nodejs18.x"
-  depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
+  depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role, data.archive_file.discord_prompt_poster_zip]
+
+  source_code_hash = data.archive_file.discord_prompt_poster_zip.output_base64sha256
 }
