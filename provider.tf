@@ -1,11 +1,12 @@
 terraform {
   cloud {
     organization = "basil-home"
+
+    workspaces {
+      name = "corgivable"
+    }
   }
 
-  workspaces {
-    name = "corgivable"
-  }
   # backend "remote" {
   #   # The name of your Terraform Cloud organization.
   #   organization = "basil-home"
