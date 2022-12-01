@@ -8,19 +8,11 @@ on:
 permissions:
     contents: read
 
-env:
-    AWS_ACCESS_KEY_ID: "AKIA5ZOFKTRBQTD23VWD"
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
-
 jobs:
     terraform:
         name: "Terraform"
         runs-on: ubuntu-latest
         environment: production
-
-        env:
-            AWS_ACCESS_KEY_ID: "AKIA5ZOFKTRBQTD23VWD"
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
 
         # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
         defaults:
@@ -37,13 +29,6 @@ jobs:
               uses: hashicorp/setup-terraform@v1
               with:
                   cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-            - name: check vars
-              run: echo $AWS_ACCESS_KEY_ID
-            - name: another one
-              run: echo $AWS_SECRET_ACCESS_KEY
-
-            - name: check aws
-              run: aws sts get-caller-identity
 
             # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
             - name: Terraform Init
@@ -56,9 +41,6 @@ jobs:
             # Generates an execution plan for Terraform
             - name: Terraform Plan
               run: terraform plan -input=false
-              env:
-                  AWS_ACCESS_KEY_ID: "AKIA5ZOFKTRBQTD23VWD"
-                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
 
               # On push to "master", build or change infrastructure according to Terraform configuration files
               # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
