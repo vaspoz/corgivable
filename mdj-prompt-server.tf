@@ -18,8 +18,11 @@ module "ec2_mdjr_prompt_server" {
 
   name = "midj-prompt-server"
 
-  ami                    = "ami-076309742d466ad69"
-  instance_type          = "t2.xlarge"
+  ami           = "ami-0b8411dcc14f846fd"
+  instance_type = "t2.micro"
+  root_block_device = [{
+    volume_size = 16
+  }]
   key_name               = "test-delete-me"
   monitoring             = true
   vpc_security_group_ids = [module.ec2_mdjr_prompt_server_sg.security_group_id]

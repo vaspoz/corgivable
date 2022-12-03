@@ -16,11 +16,11 @@ if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
 	        exit
 fi
 
-cd "$(dirname "$0")"
+# cd "$(dirname "$0")"
 
 main() {
 	export FLASK_APP=prompt-generator.py
-	export FLASK_ENV=production
+	export FLASK_DEBUG=true
 	echo done
 }
 
