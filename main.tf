@@ -86,8 +86,12 @@ resource "aws_lambda_function" "discord_prompt_poster" {
 }
 
 resource "null_resource" "install_npm" {
+  triggers = {
+    "always_run" = md5(file("${path.module}/lambda-layer/nodejs/package.json"))
+  }
   provisioner "local-exec" {
-    command = "cd lambda-layer && cd nodejs && npm install"
+    working_dir = "${path.module}/lambda-layer/nodejs"
+    command     = "npm install"
   }
 }
 data "archive_file" "lambda_layer_zip" {
