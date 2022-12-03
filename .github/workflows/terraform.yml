@@ -30,6 +30,11 @@ jobs:
               with:
                   cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v3.5.0s
+              with:
+                  node-version: 16
+
             # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
             - name: Terraform Init
               run: terraform init
