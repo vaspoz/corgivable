@@ -60,7 +60,7 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
 
 data "archive_file" "discord_prompt_poster_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/lambda/"
+  source_file = "${path.module}/lambda/discord-poster.js"
   output_path = "${path.module}/discord-poster-lambda.zip"
 }
 
@@ -69,8 +69,32 @@ resource "aws_lambda_function" "discord_prompt_poster" {
   function_name = "discord-prompt-poster"
   role          = aws_iam_role.lambda_role.arn
   handler       = "discord-poster.handler"
-  runtime       = "nodejs18.x"
+  runtime       = "nodejs16.x"
   depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role, data.archive_file.discord_prompt_poster_zip]
 
   source_code_hash = data.archive_file.discord_prompt_poster_zip.output_base64sha256
+
+  timeout = 30
+
+  layers = [aws_lambda_layer_version.node_modules_layer.arn]
+  environment {
+    variables = {
+      TOKEN = var.discord_token
+    }
+
+  }
+}
+
+data "archive_file" "lambda_layer_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/lambda-layer"
+  output_path = "${path.module}/lambda_layer.zip"
+}
+
+resource "aws_lambda_layer_version" "node_modules_layer" {
+  filename   = "${path.module}/lambda_layer.zip"
+  layer_name = "node_modules"
+
+  compatible_runtimes = ["nodejs16.x"]
+  source_code_hash    = data.archive_file.lambda_layer_zip.output_base64sha256
 }
