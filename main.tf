@@ -98,3 +98,12 @@ resource "aws_lambda_layer_version" "node_modules_layer" {
   compatible_runtimes = ["nodejs16.x"]
   source_code_hash    = data.archive_file.lambda_layer_zip.output_base64sha256
 }
+
+
+resource "aws_lambda_permission" "with_sns" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.discord_prompt_poster.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = module.sns_topic_ready_prompt.sns_topic_arn
+}

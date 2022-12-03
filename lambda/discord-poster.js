@@ -14,7 +14,7 @@ exports.handler = async (event) => {
 		]
 	});
 
-	client.once(Events.ClientReady, async (c) => {
+	await client.once(Events.ClientReady, async (c) => {
 		console.log(`Ready! Logged in as ${c.user.tag}`);
 
 		await c.channels.cache.get("1046390849765912692").send(prompt_message);
