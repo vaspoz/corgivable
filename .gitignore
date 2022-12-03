@@ -41,3 +41,4 @@ lambda
 python-prompt-generator/Scripts
 python-prompt-generator/Include
 python-prompt-generator/Lib
+python-prompt-generator/pyvenv.cfg
