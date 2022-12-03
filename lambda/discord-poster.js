@@ -1,6 +1,6 @@
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 
-exports.handler = async (event) => {
+exports.handler = (event) => {
 	const prompt_message = event.Records[0].Sns.Message;
 
 	if (!prompt_message) return;
@@ -14,7 +14,7 @@ exports.handler = async (event) => {
 		]
 	});
 
-	await client.once(Events.ClientReady, async (c) => {
+	client.once(Events.ClientReady, async (c) => {
 		console.log(`Ready! Logged in as ${c.user.tag}`);
 
 		await c.channels.cache.get("1046390849765912692").send(prompt_message);
@@ -22,5 +22,5 @@ exports.handler = async (event) => {
 		c.destroy();
 	});
 
-	await client.login(process.env.TOKEN);
+	client.login(process.env.TOKEN);
 };
