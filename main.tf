@@ -85,10 +85,18 @@ resource "aws_lambda_function" "discord_prompt_poster" {
   }
 }
 
+resource "null_resource" "install_npm" {
+  provisioner "local-exec" {
+    command = "cd lambda-layer && cd nodejs && npm install"
+  }
+}
 data "archive_file" "lambda_layer_zip" {
   type        = "zip"
   source_dir  = "${path.module}/lambda-layer"
   output_path = "${path.module}/lambda_layer.zip"
+  depends_on = [
+    null_resource.install_npm
+  ]
 }
 
 resource "aws_lambda_layer_version" "node_modules_layer" {
