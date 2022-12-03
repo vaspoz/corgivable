@@ -12,37 +12,37 @@ with open("name.txt", "r") as f:
 
 
 def generate(starting_text):
-    for count in range(6):
-        seed = random.randint(100, 1000000)
-        set_seed(seed)
+    seed = random.randint(100, 1000000)
+    set_seed(seed)
     
-        # If the text field is empty
-        if starting_text == "":
-            starting_text: str = line[random.randrange(0, len(line))].replace("\n", "").lower().capitalize()
-            starting_text: str = re.sub(r"[,:\-–.!;?_]", '', starting_text)
-            print(starting_text)
-    
-        response = gpt2_pipe(starting_text, max_length=random.randint(60, 90), num_return_sequences=8)
-        response_list = []
-        for x in response:
-            resp = x['generated_text'].strip()
-            if resp != starting_text and len(resp) > (len(starting_text) + 4) and resp.endswith((":", "-", "—")) is False:
-                response_list.append(resp)
-                print(resp)
-                print("-------------")
+    # If the text field is empty
+    if starting_text == "":
+        starting_text: str = line[random.randrange(0, len(line))].replace("\n", "").lower().capitalize()
+        starting_text: str = re.sub(r"[,:\-–.!;?_]", '', starting_text)
+        print(starting_text)
 
-    
-        response_end = "\n".join(response_list)
-        response_end = response_end.replace("  ", " ");
-        response_end = re.sub('[^ ]+\.[^ ]+','', response_end)
-        response_end = re.sub('--ar [0-9]{1,2}:[0-9]{1,2}','', response_end)
-        response_end = re.sub('--stop [0-9]{1,3}','', response_end)
-        response_end = re.sub('::[0-9]{1,3}','', response_end)
-        response_end = re.sub('-h [0-9]{1,4}','', response_end)
-        response_end = response_end.replace("<", "").replace(">", "").replace(" +", ",")
-        if response_end != "":
-            print(response_end)
-            return response_end
+    response = gpt2_pipe(starting_text, max_length=random.randint(60, 90), num_return_sequences=8)
+    response_list = []
+    for x in response:
+        resp = x['generated_text'].strip()
+        if resp != starting_text and len(resp) > (len(starting_text) + 4) and resp.endswith((":", "-", "—")) is False:
+            response_list.append(resp)
+
+    response_end = "\n".join(response_list)
+    response_end = response_end.replace("  ", " ")
+    response_end = response_end.replace(": :", "")
+    response_end = response_end.replace("-h 350", "")
+    response_end = re.sub('[^ ]+\.[^ ]+','', response_end)
+    response_end = re.sub('--ar [0-9]{1,2}:[0-9]{1,2}','', response_end)
+    response_end = re.sub('--stop [0-9]{1,3}','', response_end)
+    response_end = re.sub('--w [0-9]{1,3}','', response_end)
+    response_end = re.sub('::[0-9]{0,3}','', response_end)
+    response_end = re.sub('--h [0-9]{1,4}','', response_end)
+    response_end = response_end.replace("  ", " ")
+    response_end = response_end.replace("<", "").replace(">", "").replace(" +", ",")
+
+    for prompt in response_end.split("\n"):
+        print("/imagine prompt: " + prompt + " --v 4 --q 2")
 
 
 @app.post("/generate")

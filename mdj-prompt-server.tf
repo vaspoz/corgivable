@@ -19,7 +19,7 @@ module "ec2_mdjr_prompt_server" {
   name = "midj-prompt-server"
 
   ami           = "ami-0b8411dcc14f846fd"
-  instance_type = "t2.micro"
+  instance_type = "t2.2xlarge"
   root_block_device = [{
     volume_size = 16
   }]
