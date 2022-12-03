@@ -41,12 +41,14 @@ jobs:
             # Generates an execution plan for Terraform
             - name: Terraform Plan
               run: terraform plan -input=false
+ 
+            - name: Use Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
 
               # On push to "master", build or change infrastructure according to Terraform configuration files
               # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
             - name: Terraform Apply
               if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-              uses: actions/setup-node@v3.5.0
-              with:
-                  node-version: 16
               run: terraform apply -auto-approve -input=false
