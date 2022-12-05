@@ -30,11 +30,10 @@ override.tf.json
 
 .local
 
-lambda
-
 **/*.zip
 
 **/node_modules
+
 **/package-lock.json
 
 .terraform.lock.hcl

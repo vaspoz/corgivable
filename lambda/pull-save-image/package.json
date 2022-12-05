@@ -1,15 +1,14 @@
 {
-  "name": "common",
+  "name": "pull-save-image",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "pull-save-image.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1268.0",
-    "discord.js": "^14.7.1"
+    "aws-sdk": "^2.1268.0"
   }
 }
