@@ -21,7 +21,7 @@ resource "aws_lambda_function" "discord_prompt_poster" {
 
 data "archive_file" "discord_prompt_poster_zip" {
   type        = "zip"
-  source_file = "${path.module}/lambda/discord-poster.js"
+  source_file = "${path.module}/lambda/discord-poster/discord-poster.js"
   output_path = "${path.module}/discord-poster-lambda.zip"
 }
 
