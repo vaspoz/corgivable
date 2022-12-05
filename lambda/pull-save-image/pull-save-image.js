@@ -1,6 +1,6 @@
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 
-exports.handler = (event) => {
+exports.handler = async (event) => {
 	return {
 		statusCode: 200,
 		body: JSON.stringify({
