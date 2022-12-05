@@ -37,6 +37,7 @@ lambda
 **/node_modules
 
 .terraform.lock.hcl
+*.tfvars
 
 python-prompt-generator/Scripts
 python-prompt-generator/Include

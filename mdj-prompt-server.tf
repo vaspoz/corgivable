@@ -12,24 +12,24 @@ module "ec2_mdjr_prompt_server_sg" {
   egress_rules       = ["all-all"]
 }
 
-module "ec2_mdjr_prompt_server" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "~> 3.0"
+# module "ec2_mdjr_prompt_server" {
+#   source  = "terraform-aws-modules/ec2-instance/aws"
+#   version = "~> 3.0"
 
-  name = "midj-prompt-server"
+#   name = "midj-prompt-server"
 
-  ami           = "ami-0b8411dcc14f846fd"
-  instance_type = "t2.2xlarge"
-  root_block_device = [{
-    volume_size = 16
-  }]
-  key_name               = "test-delete-me"
-  monitoring             = true
-  vpc_security_group_ids = [module.ec2_mdjr_prompt_server_sg.security_group_id]
-  subnet_id              = module.main_vpc.public_subnets[0]
-}
+#   ami           = "ami-0b8411dcc14f846fd"
+#   instance_type = "t2.2xlarge"
+#   root_block_device = [{
+#     volume_size = 16
+#   }]
+#   key_name               = "test-delete-me"
+#   monitoring             = true
+#   vpc_security_group_ids = [module.ec2_mdjr_prompt_server_sg.security_group_id]
+#   subnet_id              = module.main_vpc.public_subnets[0]
+# }
 
-module "incoming_prompt_drafts" {
+module "sqs_incoming_prompt_drafts" {
   source  = "terraform-aws-modules/sqs/aws"
   version = "~> 2.0"
 
