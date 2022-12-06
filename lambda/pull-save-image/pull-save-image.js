@@ -30,4 +30,27 @@ exports.handler = async (event) => {
 			body: JSON.stringify({ type: 1 })
 		};
 	}
+
+	// Handle a command
+	if (body.data.name == "make") {
+		return JSON.stringify({
+			type: 4,
+			data: {
+				content: "here's the reply"
+			}
+		});
+	}
+
+	if (body.data.name == "foo") {
+		return JSON.stringify({
+			type: 4,
+			data: {
+				content: "here's the reply"
+			}
+		});
+	}
+
+	return {
+		statusCode: 404
+	};
 };

@@ -33,6 +33,7 @@ override.tf.json
 **/*.zip
 
 **/node_modules
+**/.env
 
 **/package-lock.json
 
