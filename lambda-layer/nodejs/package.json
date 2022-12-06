@@ -10,7 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1268.0",
+    "axios": "^1.2.1",
     "discord.js": "^14.7.1",
+    "https": "^1.0.0",
     "tweetnacl": "^1.0.3"
   }
 }

@@ -1,5 +1,7 @@
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 const nacl = require("tweetnacl");
+const aws = require("aws-sdk");
+const https = require("https");
 
 exports.handler = async (event) => {
 	// Checking signature (requirement 1.)
@@ -32,7 +34,36 @@ exports.handler = async (event) => {
 	}
 
 	// Handle a command
-	if (body.data.name == "make") {
+	if (body.data.name == "pull") {
+		let body = "";
+		await axios({
+			url: "https://cdn.discordapp.com/attachments/1046390849765912692/1048999888895098951/basil_corgi_Jedi_63e86f44-03d2-4488-8a9f-45664baa3161.png", //your url
+			method: "GET",
+			responseType: "blob" // important
+		}).then((response) => {
+			body = response.data;
+		});
+
+		console.log(body);
+
+		let s3 = new aws.S3();
+		let uploadParams = {
+			Bucket: "corgi-rendered-ready",
+			Key: "test-object.png",
+			Body: body
+		};
+
+		await s3
+			.upload(uploadParams, (err, data) => {
+				if (err) {
+					console.log(err);
+				}
+				if (data) {
+					console.log("Upload Success", data.Location);
+				}
+			})
+			.promise();
+
 		return JSON.stringify({
 			type: 4,
 			data: {
