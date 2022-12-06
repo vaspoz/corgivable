@@ -13,7 +13,8 @@ resource "aws_lambda_function" "discord_pull_image" {
   layers = [aws_lambda_layer_version.node_modules_layer.arn]
   environment {
     variables = {
-      TOKEN = var.discord_token
+      TOKEN      = var.discord_token
+      PUBLIC_KEY = var.discord_public_key
     }
 
   }
