@@ -1,7 +1,7 @@
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 const nacl = require("tweetnacl");
 const aws = require("aws-sdk");
-const https = require("https");
+const axios = require("axios");
 
 exports.handler = async (event) => {
 	// Checking signature (requirement 1.)
@@ -35,28 +35,50 @@ exports.handler = async (event) => {
 
 	// Handle a command
 	if (body.data.name == "pull") {
-		let body = "";
+		let messageObject = Object.values(body.data.resolved.messages)[0];
+		let imageUrl = messageObject.attachments[0].url;
+		let imageName = messageObject.attachments[0].filename;
+		let imagePrompt = messageObject.content;
+
+		console.log("URL: " + imageUrl);
+		console.log("Name: " + imageName);
+		console.log("Prompt: " + imagePrompt);
+
+		let imageData = "";
 		await axios({
-			url: "https://cdn.discordapp.com/attachments/1046390849765912692/1048999888895098951/basil_corgi_Jedi_63e86f44-03d2-4488-8a9f-45664baa3161.png", //your url
+			url: imageUrl,
 			method: "GET",
-			responseType: "blob" // important
+			responseType: "arraybuffer" // important
 		}).then((response) => {
-			body = response.data;
+			imageData = response.data;
 		});
 
-		console.log(body);
+		if (!imageData) {
+			return JSON.stringify({
+				type: 4,
+				data: {
+					content: "Error during image processing"
+				}
+			});
+		}
 
 		let s3 = new aws.S3();
 		let uploadParams = {
-			Bucket: "corgi-rendered-ready",
-			Key: "test-object.png",
-			Body: body
+			Bucket: "corgi-rendered-images-ready",
+			Key: imageName,
+			Body: imageData
 		};
 
 		await s3
 			.upload(uploadParams, (err, data) => {
 				if (err) {
 					console.log(err);
+					return JSON.stringify({
+						type: 4,
+						data: {
+							content: "Error during image processing"
+						}
+					});
 				}
 				if (data) {
 					console.log("Upload Success", data.Location);
@@ -67,7 +89,7 @@ exports.handler = async (event) => {
 		return JSON.stringify({
 			type: 4,
 			data: {
-				content: "here's the reply"
+				content: "Pulled"
 			}
 		});
 	}

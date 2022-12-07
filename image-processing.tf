@@ -1,9 +1,14 @@
 module "s3_corgi_images" {
   source = "terraform-aws-modules/s3-bucket/aws"
 
-  bucket = "corgi-rendered-ready"
-  acl    = "private"
+  bucket = "corgi-rendered-images-ready"
+  # acl    = "private"
 
+  block_public_acls       = true
+  block_public_policy     = true
+  restrict_public_buckets = true
+
+  force_destroy = true
 }
 
 # API Gateway

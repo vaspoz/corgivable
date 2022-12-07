@@ -68,7 +68,7 @@ resource "aws_iam_policy" "lambda_policy" {
      "Resource": [
         "${module.s3_corgi_images.s3_bucket_arn}",
         "${module.s3_corgi_images.s3_bucket_arn}/*"
-      ],
+     ],
      "Effect": "Allow"
    }
  ]
