@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "discord_prompt_poster" {
-  filename      = "${path.module}/discord-poster-lambda.zip"
+  filename      = "${path.module}/zip-discord-poster-lambda.zip"
   function_name = "discord-prompt-poster"
   role          = aws_iam_role.lambda_role.arn
   handler       = "discord-poster.handler"
@@ -22,7 +22,7 @@ resource "aws_lambda_function" "discord_prompt_poster" {
 data "archive_file" "discord_prompt_poster_zip" {
   type        = "zip"
   source_file = "${path.module}/lambda/discord-poster/discord-poster.js"
-  output_path = "${path.module}/discord-poster-lambda.zip"
+  output_path = "${path.module}/zip-discord-poster-lambda.zip"
 }
 
 resource "aws_iam_role" "lambda_role" {

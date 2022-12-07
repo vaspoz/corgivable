@@ -40,8 +40,8 @@ exports.handler = async (event) => {
 		let imageName = messageObject.attachments[0].filename;
 		// from: **corgi Jedi baby in the forest --v 4 --q 2** - Upscaled by <@818596818983583831> (fast)
 		// to: corgi Jedi baby in the forest --v 4 --q 2
-		imageName = imageName.match(/\*\*.*\*\*/)[0].slice(2, -2);
 		let imagePrompt = messageObject.content;
+		imagePrompt = imagePrompt.match(/\*\*.*\*\*/)[0].slice(2, -2);
 
 		console.log("URL: " + imageUrl);
 		console.log("Name: " + imageName);
@@ -99,15 +99,9 @@ exports.handler = async (event) => {
 		let putRequest = {
 			TableName: "corgi-meta-data",
 			Item: {
-				key: {
-					S: imageName
-				},
-				posted: {
-					S: "false"
-				},
-				prompt: {
-					S: imagePrompt
-				}
+				key: imageName,
+				posted: "false",
+				prompt: imagePrompt
 			}
 		};
 
@@ -115,7 +109,9 @@ exports.handler = async (event) => {
 			.put(putRequest)
 			.promise()
 			.then((data) => console.log("Successfully saved the image"))
-			.catch((err) => console.log("Error during DynamoDB put operation"));
+			.catch((err) =>
+				console.log("Error during DynamoDB put operation: " + err)
+			);
 
 		return JSON.stringify({
 			type: 4,

@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "discord_pull_image" {
-  filename      = "${path.module}/pull-save-image.zip"
+  filename      = "${path.module}/zip-pull-save-image.zip"
   function_name = "discord-pull-save-image"
   role          = aws_iam_role.lambda_role.arn
   handler       = "pull-save-image.handler"
@@ -23,7 +23,7 @@ resource "aws_lambda_function" "discord_pull_image" {
 data "archive_file" "discord_pull_image_zip" {
   type        = "zip"
   source_file = "${path.module}/lambda/pull-save-image/pull-save-image.js"
-  output_path = "${path.module}/pull-save-image.zip"
+  output_path = "${path.module}/zip-pull-save-image.zip"
 }
 
 resource "aws_lambda_permission" "api_gateway_invoke_lambda" {
