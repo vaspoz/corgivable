@@ -121,7 +121,7 @@ exports.handler = async (event) => {
 		});
 	}
 
-	if (body.data.name == "foo") {
+	if (body.data.name == "make") {
 		return JSON.stringify({
 			type: 4,
 			data: {

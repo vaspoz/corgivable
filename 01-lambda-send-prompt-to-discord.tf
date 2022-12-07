@@ -80,7 +80,8 @@ resource "aws_iam_policy" "lambda_policy" {
         "dynamodb:PutItem",
         "dynamodb:GetItem",
         "dynamodb:Scan",
-        "dynamodb:UpdateItem"
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem"
       ],
       "Resource": [
         "${module.dynamodb_table.dynamodb_table_arn}"
