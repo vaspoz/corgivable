@@ -1,3 +1,13 @@
+module "sqs_incoming_prompt_drafts" {
+  source  = "terraform-aws-modules/sqs/aws"
+  version = "~> 2.0"
+
+  name = "inbound-prompt-drafts"
+}
+
+
+
+
 # module "ec2_mdjr_prompt_server_sg" {
 #   source = "terraform-aws-modules/security-group/aws"
 
@@ -28,10 +38,3 @@
 #   vpc_security_group_ids = [module.ec2_mdjr_prompt_server_sg.security_group_id]
 #   subnet_id              = module.main_vpc.public_subnets[0]
 # }
-
-module "sqs_incoming_prompt_drafts" {
-  source  = "terraform-aws-modules/sqs/aws"
-  version = "~> 2.0"
-
-  name = "inbound-prompt-drafts"
-}
