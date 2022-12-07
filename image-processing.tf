@@ -71,3 +71,27 @@ module "discord_api_gateway" {
 
   }
 }
+
+
+
+# ************************
+#     DynamoDB
+# ************************
+module "dynamodb_table" {
+  source = "terraform-aws-modules/dynamodb-table/aws"
+
+  name      = "corgi-meta-data"
+  hash_key  = "key"
+  range_key = "posted"
+
+  attributes = [
+    {
+      name = "key"
+      type = "S"
+    },
+    {
+      name = "posted"
+      type = "S"
+    }
+  ]
+}

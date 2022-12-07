@@ -70,6 +70,22 @@ resource "aws_iam_policy" "lambda_policy" {
         "${module.s3_corgi_images.s3_bucket_arn}/*"
      ],
      "Effect": "Allow"
+   },
+   {
+      "Action": [
+        "dynamodb:Scan",
+        "dynamodb:Query",
+        "dynamodb:GetRecords",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+      ],
+      "Resource": [
+        "${module.dynamodb_table.dynamodb_table_arn}"
+      ],
+      "Effect": "Allow"
    }
  ]
 }

@@ -10,20 +10,17 @@ exports.handler = async (event) => {
 	const signature = event.headers["x-signature-ed25519"];
 	const timestamp = event.headers["x-signature-timestamp"];
 	const strBody = event.body; // should be string, for successful sign
-
 	const isVerified = nacl.sign.detached.verify(
 		Buffer.from(timestamp + strBody),
 		Buffer.from(signature, "hex"),
 		Buffer.from(PUBLIC_KEY, "hex")
 	);
-
 	if (!isVerified) {
 		return {
 			statusCode: 401,
 			body: JSON.stringify("invalid request signature")
 		};
 	}
-
 	// Replying to ping (requirement 2.)
 	const body = JSON.parse(strBody);
 	if (body.type == 1) {
@@ -35,15 +32,24 @@ exports.handler = async (event) => {
 
 	// Handle a command
 	if (body.data.name == "pull") {
+		// ***************
+		// Get image data
+		// ***************
 		let messageObject = Object.values(body.data.resolved.messages)[0];
 		let imageUrl = messageObject.attachments[0].url;
 		let imageName = messageObject.attachments[0].filename;
+		// from: **corgi Jedi baby in the forest --v 4 --q 2** - Upscaled by <@818596818983583831> (fast)
+		// to: corgi Jedi baby in the forest --v 4 --q 2
+		imageName = imageName.match(/\*\*.*\*\*/)[0].slice(2, -2);
 		let imagePrompt = messageObject.content;
 
 		console.log("URL: " + imageUrl);
 		console.log("Name: " + imageName);
 		console.log("Prompt: " + imagePrompt);
 
+		// ******************
+		// Save it to S3
+		// ******************
 		let imageData = "";
 		await axios({
 			url: imageUrl,
@@ -85,6 +91,31 @@ exports.handler = async (event) => {
 				}
 			})
 			.promise();
+
+		// *******************************
+		// Save metadata to DynamoDB
+		// *******************************
+		let dynamodb = new aws.DynamoDB.DocumentClient();
+		let putRequest = {
+			TableName: "corgi-meta-data",
+			Item: {
+				key: {
+					S: imageName
+				},
+				posted: {
+					S: "false"
+				},
+				prompt: {
+					S: imagePrompt
+				}
+			}
+		};
+
+		await dynamodb
+			.put(putRequest)
+			.promise()
+			.then((data) => console.log("Successfully saved the image"))
+			.catch((err) => console.log("Error during DynamoDB put operation"));
 
 		return JSON.stringify({
 			type: 4,
