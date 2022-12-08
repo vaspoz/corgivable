@@ -1,4 +1,5 @@
 const aws = require("aws-sdk");
+const SocialPost = require("social-post-api"); // Install "npm i social-post-api"
 
 exports.handler = async (event) => {
 	const tableName = "corgi-meta-data";
@@ -34,7 +35,26 @@ exports.handler = async (event) => {
 		console.log("Publishing the item: " + JSON.stringify(publishItem));
 		if (!publishItem) return;
 
-		// do publishing
+		const s3 = new aws.S3();
+		const bucketName = process.env.CORGI_BUCKET_NAME;
+		const postHashes =
+			"#corgi #funnypictures #doglover #instadog #dogs_of_instagram #happydog #corgilover #corgidaily #corgilicious #digitalart #corgicuteness #corgithings";
+
+		const tempUrl = s3.getSignedUrl("getObject", {
+			Bucket: bucketName,
+			Key: publishItem.key,
+			Expires: 60
+		});
+		console.log("Presigned URL: ", tempUrl);
+
+		const social = new SocialPost(process.env.SOCIAL_PLATFORM_API_KEY);
+		await social
+			.post({
+				post: postHashes,
+				platforms: ["instagram"],
+				mediaUrls: [tempUrl]
+			})
+			.catch(console.error);
 
 		await dynamodb
 			.delete({

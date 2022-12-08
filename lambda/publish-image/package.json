@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1270.0"
+    "aws-sdk": "^2.1270.0",
+    "instagram-web-api": "^2.2.2",
+    "social-post-api": "^1.1.1"
   }
 }
