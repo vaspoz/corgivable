@@ -105,13 +105,7 @@ exports.handler = async (event) => {
 			}
 		};
 
-		await dynamodb
-			.put(putRequest)
-			.promise()
-			.then((data) => console.log("Successfully saved the image"))
-			.catch((err) =>
-				console.log("Error during DynamoDB put operation: " + err)
-			);
+		await dynamodb.put(putRequest).promise();
 
 		return JSON.stringify({
 			type: 4,
