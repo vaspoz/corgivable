@@ -9,8 +9,8 @@ permissions:
     contents: read
 
 env:
-  TF_VARS_discord_token: ${{ secrets.DISCORD_TOKEN }}
-  TF_VARS_discord_public_key: ${{ secrets.DISCORD_PUBLIC_KEY }}
+  TF_VAR_discord_token: ${{ secrets.DISCORD_TOKEN }}
+  TF_VAR_discord_public_key: ${{ secrets.DISCORD_PUBLIC_KEY }}
   
 jobs:
     terraform:
