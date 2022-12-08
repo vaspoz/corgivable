@@ -1,4 +1,4 @@
-const axios = require("axios").default;
+const axios = require("axios");
 require("dotenv").config();
 
 let url = `https://discord.com/api/v8/applications/${process.env.APP_ID}/guilds/${process.env.GUILD_ID}/commands`;
@@ -9,11 +9,25 @@ const headers = {
 };
 
 let command_data = {
-	name: "pull",
-	type: 3
-	// description: "pull the i"
+	name: "make",
+	options: [
+		{
+			type: 3,
+			name: "draft",
+			description: "prompt draft",
+			required: true
+		}
+	],
+	description: "make a prompt"
 };
 
-axios.post(url, JSON.stringify(command_data), {
-	headers: headers
-});
+// axios
+// 	.get(url, { headers })
+// 	.then((data) => console.log(data))
+// 	.catch((err) => console.log("err", err.message));
+axios
+	.post(url, JSON.stringify(command_data), {
+		headers: headers
+	})
+	.then((data) => console.log(JSON.stringify(data)))
+	.catch((err) => console.log("error", err));

@@ -15,6 +15,7 @@ resource "aws_lambda_function" "discord_pull_image" {
     variables = {
       TOKEN      = var.discord_token
       PUBLIC_KEY = var.discord_public_key
+      QUEUE_URL  = module.sqs_incoming_prompt_drafts.this_sqs_queue_id
     }
 
   }

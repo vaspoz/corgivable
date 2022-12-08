@@ -122,15 +122,34 @@ exports.handler = async (event) => {
 	}
 
 	if (body.data.name == "make") {
-		return JSON.stringify({
-			type: 4,
-			data: {
-				content: "here's the reply"
-			}
-		});
+		let sqs = new aws.SQS();
+		if (!body.data.options) return errorResponse;
+
+		let message = body.data.options[0].value;
+		console.log("Received draft: " + message);
+		let sqsParams = {
+			MessageBody: message,
+			QueueUrl: process.env.QUEUE_URL
+		};
+		await sqs.sendMessage(sqsParams).promise();
+		return makeSuccess;
 	}
 
 	return {
 		statusCode: 404
 	};
 };
+
+const errorResponse = JSON.stringify({
+	type: 4,
+	data: {
+		content: "Error during request processing"
+	}
+});
+
+const makeSuccess = JSON.stringify({
+	type: 4,
+	data: {
+		content: "Queued"
+	}
+});

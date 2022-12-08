@@ -63,11 +63,10 @@ resource "aws_iam_policy" "lambda_policy" {
    },
    {
      "Action": [
-       "s3:*"
+        "sqs:SendMessage"
      ],
      "Resource": [
-        "${module.s3_corgi_images.s3_bucket_arn}",
-        "${module.s3_corgi_images.s3_bucket_arn}/*"
+        "${module.sqs_incoming_prompt_drafts.this_sqs_queue_arn}"
      ],
      "Effect": "Allow"
    },
@@ -87,6 +86,15 @@ resource "aws_iam_policy" "lambda_policy" {
         "${module.dynamodb_table.dynamodb_table_arn}"
       ],
       "Effect": "Allow"
+   },
+   {
+     "Action": [
+       "logs:CreateLogGroup",
+       "logs:CreateLogStream",
+       "logs:PutLogEvents"
+     ],
+     "Resource": "arn:aws:logs:*:*:*",
+     "Effect": "Allow"
    }
  ]
 }
