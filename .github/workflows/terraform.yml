@@ -8,6 +8,10 @@ on:
 permissions:
     contents: read
 
+env:
+  TF_VARS_discord_token: ${{ secrets.DISCORD_TOKEN }}
+  TF_VARS_discord_public_key: ${{ secrets.DISCORD_PUBLIC_KEY }}
+  
 jobs:
     terraform:
         name: "Terraform"
