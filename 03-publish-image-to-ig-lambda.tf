@@ -46,5 +46,5 @@ resource "aws_lambda_permission" "cloud_watch_invoke_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.publish_image.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_target.publish_image_lambda_target.arn
+  source_arn    = aws_cloudwatch_event_rule.publish_image_event_rule.arn
 }
