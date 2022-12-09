@@ -91,10 +91,6 @@ while len(rs)>0:
         # Get the message from SQS (prompt draft)
         message=messageJson["Body"]
         print('Message received: ' + message)
-        if not message.startswith("make"):
-            sqs_delete_message(messageJson["ReceiptHandle"])
-            continue
-        message = message[5:]
 
         generate_prompt(message)
         print("Generated")
