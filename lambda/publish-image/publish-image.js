@@ -54,7 +54,7 @@ exports.handler = async (event) => {
 				platforms: ["instagram"],
 				mediaUrls: [tempUrl]
 			})
-			.catch(console.error);
+			.catch(console.log);
 
 		await dynamodb
 			.delete({
