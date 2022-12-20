@@ -8,14 +8,13 @@ resource "aws_lambda_function" "publish_image" {
 
   source_code_hash = data.archive_file.publish_image_zip.output_base64sha256
 
-  timeout = 30
+  timeout = 60
 
   layers = [aws_lambda_layer_version.node_modules_layer.arn]
 
   environment {
     variables = {
-      CORGI_BUCKET_NAME       = module.s3_corgi_images.s3_bucket_id
-      SOCIAL_PLATFORM_API_KEY = var.social_platform_key
+      CORGI_BUCKET_NAME = module.s3_corgi_images.s3_bucket_id
     }
   }
 }
@@ -47,4 +46,17 @@ resource "aws_lambda_permission" "cloud_watch_invoke_lambda" {
   function_name = aws_lambda_function.publish_image.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.publish_image_event_rule.arn
+}
+
+
+resource "aws_ssm_parameter" "ig_username" {
+  name  = "/production/ig/username"
+  type  = "SecureString"
+  value = var.ig_username
+}
+
+resource "aws_ssm_parameter" "ig_password" {
+  name  = "/production/ig/password"
+  type  = "SecureString"
+  value = var.ig_password
 }

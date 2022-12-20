@@ -3,6 +3,8 @@ module "sqs_incoming_prompt_drafts" {
   version = "~> 2.0"
 
   name = "inbound-prompt-drafts"
+
+  message_retention_seconds = 1209600 # 14 days
 }
 
 

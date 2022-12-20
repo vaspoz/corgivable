@@ -105,6 +105,13 @@ resource "aws_iam_policy" "lambda_policy" {
      ],
      "Resource": "arn:aws:logs:*:*:*",
      "Effect": "Allow"
+   },
+   {
+     "Action": [
+       "ssm:GetParameter"
+     ],
+     "Resource": "arn:aws:ssm:eu-central-1:947990993987:*",
+     "Effect": "Allow"
    }
  ]
 }

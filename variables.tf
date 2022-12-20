@@ -10,8 +10,14 @@ variable "discord_public_key" {
   sensitive   = true
 }
 
-variable "social_platform_key" {
+variable "ig_username" {
   type        = string
-  description = "A public key"
+  description = "Username"
+  sensitive   = true
+}
+
+variable "ig_password" {
+  type        = string
+  description = "Password"
   sensitive   = true
 }

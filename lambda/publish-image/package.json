@@ -10,7 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1270.0",
+    "axios": "^1.2.1",
+    "instagram-private-api": "^1.45.3",
     "instagram-web-api": "^2.2.2",
-    "social-post-api": "^1.1.1"
+    "png-to-jpeg": "^1.0.1",
+    "social-post-api": "^1.1.1",
+    "util": "^0.12.5"
   }
 }

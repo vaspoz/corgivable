@@ -13,8 +13,11 @@
     "axios": "^1.2.1",
     "discord.js": "^14.7.1",
     "https": "^1.0.0",
+    "instagram-private-api": "^1.45.3",
     "instagram-web-api": "^2.2.2",
+    "png-to-jpeg": "^1.0.1",
     "social-post-api": "^1.1.1",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "util": "^0.12.5"
   }
 }
