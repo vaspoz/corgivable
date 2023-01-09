@@ -8,7 +8,7 @@ module "s3_corgi_images" {
   block_public_policy     = true
   restrict_public_buckets = true
 
-  force_destroy = true
+  force_destroy = false
 }
 
 # API Gateway
