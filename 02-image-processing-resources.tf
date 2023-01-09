@@ -24,7 +24,7 @@ module "discord_api_gateway" {
 
   cors_configuration = {
     allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
-    allow_methods = ["POST"]
+    allow_methods = ["POST", "GET"]
     allow_origins = ["*"]
   }
 
@@ -36,10 +36,11 @@ module "discord_api_gateway" {
 
   integrations = {
 
-    # "POST /discord" = {
-    #   lambda_arn       = aws_lambda_function.discord_pull_image.arn
-    #   integration_type = "AWS_PROXY"
-    # }
+    "GET /images/{number}" = {
+      lambda_arn             = aws_lambda_function.extract_images.arn
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+    }
 
     "POST /" = {
       integration_type       = "AWS_PROXY"
