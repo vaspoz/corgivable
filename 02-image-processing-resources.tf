@@ -36,11 +36,12 @@ module "discord_api_gateway" {
 
   integrations = {
 
-    "GET /images/{number}" = {
-      lambda_arn             = aws_lambda_function.extract_images.arn
-      integration_type       = "AWS_PROXY"
-      payload_format_version = "2.0"
-    }
+    # === Turn this on if you need images ===
+    # "GET /images/{number}" = {
+    #   lambda_arn             = aws_lambda_function.extract_images.arn
+    #   integration_type       = "AWS_PROXY"
+    #   payload_format_version = "2.0"
+    # }
 
     "POST /" = {
       integration_type       = "AWS_PROXY"
